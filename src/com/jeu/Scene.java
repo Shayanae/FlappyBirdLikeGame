@@ -1,5 +1,6 @@
 package com.jeu;
 
+import com.characters.FlappyBird;
 import com.objects.Pipe;
 
 import javax.swing.*;
@@ -20,13 +21,14 @@ public class Scene extends JPanel {
     public Pipe highPipe3;
     public Pipe lowPipe3;
 
+    public FlappyBird flappyBird;
+
     private final int weightBackBottom = 140;
 
     private final int distancePipe = 250;
     private final int pipeGap = 120;
 
     public int xFond;
-    private int dxPipe;
     private int xPipe;
 
     private Random random;
@@ -40,7 +42,6 @@ public class Scene extends JPanel {
 
         this.xFond = 0;
         this.xPipe = 100;
-        this.dxPipe = 0;
 
         this.highPipe1 = new Pipe(this.xPipe, -150, "/images/tuyauHaut.png");
         this.lowPipe1 = new Pipe(this.xPipe, 250, "/images/tuyauBas.png");
@@ -49,7 +50,13 @@ public class Scene extends JPanel {
         this.highPipe3 = new Pipe(this.xPipe + this.distancePipe * 2, -120, "/images/tuyauHaut.png");
         this.lowPipe3 = new Pipe(this.xPipe + this.distancePipe * 2, 280, "/images/tuyauBas.png");
 
+        this.flappyBird = new FlappyBird(100, 150, "/images/oiseau1.png");
+
         random = new Random();
+
+        this.setFocusable(true);
+        this.requestFocusInWindow();
+        this.addKeyListener(new Keyboard());
 
         Thread timerScreen = new Thread(new Timer());
         timerScreen.start();
@@ -105,5 +112,7 @@ public class Scene extends JPanel {
     public void paintComponent(Graphics g){
         this.bottomDisplacement(g);
         this.pipeDisplacement(g);
+        this.flappyBird.setY(this.flappyBird.getY() + 1);
+        g.drawImage(this.flappyBird.getImgBird(),this.flappyBird.getX(), this.flappyBird.getY(), null);
     }
 }
