@@ -23,6 +23,9 @@ public class Scene extends JPanel {
 
     public FlappyBird flappyBird;
 
+    private int score;
+    private Font police;
+
     private final int weightBackBottom = 140;
 
     private final int distancePipe = 250;
@@ -58,6 +61,9 @@ public class Scene extends JPanel {
         this.setFocusable(true);
         this.requestFocusInWindow();
         this.addKeyListener(new Keyboard());
+
+        this.score = 0;
+        this.police = new Font("Arial", Font.PLAIN, 40);
 
         Thread timerScreen = new Thread(new Timer());
         timerScreen.start();
@@ -134,11 +140,26 @@ public class Scene extends JPanel {
         return endOfGame;
     }
 
+    private void score(){
+        if(this.lowPipe1.getX() + this.lowPipe1.getWeight() == 95 || this.lowPipe2.getX() + this.lowPipe2.getWeight() == 95 ||
+           this.lowPipe3.getX() + this.lowPipe3.getWeight() == 95){
+           this.score++;
+           Audio.playSound("/audio/sonnerie.wav");
+        }
+    }
+
     public void paintComponent(Graphics g){
         this.bottomDisplacement(g);
         this.pipeDisplacement(g);
+        this.score();
+        g.setFont(police);
+        g.drawString("" + score, 140, 50);
         this.endOfGame = this.hitFlappy();
         this.flappyBird.setY(this.flappyBird.getY() + 1);
         g.drawImage(this.flappyBird.getImgBird(),this.flappyBird.getX(), this.flappyBird.getY(), null);
+        if (this.endOfGame){
+            g.drawString("Fin du jeu", 60, 200);
+            Audio.playSound("/audio/choc.wav");
+        }
     }
 }

@@ -11,8 +11,9 @@ public class Keyboard implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && !Main.scene.endOfGame){
             Main.scene.flappyBird.up();
+            Audio.playSound("/audio/battementAile.wav");
         }
     }
 
