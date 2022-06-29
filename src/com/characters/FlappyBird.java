@@ -17,6 +17,7 @@ public class FlappyBird implements Runnable{
     private String strImage;
     private ImageIcon icoBird;
     private Image imgBird;
+    private float descent;
 
     private final int pause = 10;
 
@@ -55,7 +56,10 @@ public class FlappyBird implements Runnable{
 
     // METHODES
 
-    public void up(){this.dy = 50;}
+    public void up(){
+        this.dy = 50;
+        this.descent=0;
+    }
 
     private void flying(int dy){
         if (dy > 10){
@@ -83,8 +87,9 @@ public class FlappyBird implements Runnable{
     @Override
     public void run() {
         while (true){
+            this.descent+=0.1;
             this.flying(dy);
-            this.dy--;
+            this.dy-=this.descent;
             try{Thread.sleep(pause);}
             catch (InterruptedException e){}
         }
