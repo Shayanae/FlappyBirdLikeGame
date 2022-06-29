@@ -5,7 +5,7 @@ public class Timer  implements Runnable{
 
     @Override
     public void run() {
-        while (true){ // Boucle infinie
+        while (!Main.scene.endOfGame){ // Boucle infinie
             Main.scene.xFond--;
             Main.scene.repaint();
             try{Thread.sleep(pause);}

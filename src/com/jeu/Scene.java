@@ -30,6 +30,7 @@ public class Scene extends JPanel {
 
     public int xFond;
     private int xPipe;
+    public boolean endOfGame;
 
     private Random random;
 
@@ -41,8 +42,8 @@ public class Scene extends JPanel {
         this.imgBackBottom = this.icoBackBottom.getImage();
 
         this.xFond = 0;
-        this.xPipe = 100;
-
+        this.xPipe = 400;
+        this.endOfGame = false;
         this.highPipe1 = new Pipe(this.xPipe, -150, "/images/tuyauHaut.png");
         this.lowPipe1 = new Pipe(this.xPipe, 250, "/images/tuyauBas.png");
         this.highPipe2 = new Pipe(this.xPipe + this.distancePipe, -100, "/images/tuyauHaut.png");
@@ -109,9 +110,34 @@ public class Scene extends JPanel {
         g.drawImage(this.lowPipe3.getImgPipe(), this.lowPipe3.getX(), this.lowPipe3.getY(), null);
     }
 
+    private boolean hitFlappy(){
+        boolean endOfGame = false;
+        // proche tuyau1
+        if (this.flappyBird.getX() + this.flappyBird.getWeight() > this.lowPipe1.getX() - 20 &&
+                this.flappyBird.getX() < this.lowPipe1.getX() + this.lowPipe1.getWeight() + 20){
+            endOfGame = this.flappyBird.hit(lowPipe1);
+            if (!endOfGame){endOfGame = this.flappyBird.hit(highPipe1);}
+            // proche tuyau 2
+        }else if (this.flappyBird.getX() + this.flappyBird.getWeight() > this.lowPipe2.getX() - 20 &&
+                this.flappyBird.getX() < this.lowPipe2.getX() + this.lowPipe2.getWeight() + 20){
+            endOfGame = this.flappyBird.hit(lowPipe2);
+            if (!endOfGame){endOfGame = this.flappyBird.hit(highPipe2);}
+            // proche tuyau 3
+        }else if (this.flappyBird.getX() + this.flappyBird.getWeight() > this.lowPipe3.getX() - 20 &&
+                this.flappyBird.getX() < this.lowPipe3.getX() + this.lowPipe3.getWeight() + 20){
+            endOfGame = this.flappyBird.hit(lowPipe3);
+            if (!endOfGame){endOfGame = this.flappyBird.hit(highPipe3);}
+        }else {
+            // contact avec le plafond ou le sol
+            if (this.flappyBird.getY() < 0 || this.flappyBird.getY() + this.flappyBird.getHeight() > 355){endOfGame = true;}
+        }
+        return endOfGame;
+    }
+
     public void paintComponent(Graphics g){
         this.bottomDisplacement(g);
         this.pipeDisplacement(g);
+        this.endOfGame = this.hitFlappy();
         this.flappyBird.setY(this.flappyBird.getY() + 1);
         g.drawImage(this.flappyBird.getImgBird(),this.flappyBird.getX(), this.flappyBird.getY(), null);
     }

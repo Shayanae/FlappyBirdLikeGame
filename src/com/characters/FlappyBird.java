@@ -1,5 +1,7 @@
 package com.characters;
 
+import com.objects.Pipe;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
@@ -65,6 +67,16 @@ public class FlappyBird implements Runnable{
         else if(dy == 1) {
             this.icoBird = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/oiseau1.png")));
             this.imgBird = this.icoBird.getImage();
+        }
+    }
+
+    public boolean hit(Pipe pipe){
+        if (pipe.getY() < 50){ // Détecte un tuyau haut
+            if(this.y <= pipe.getY() + pipe.getHeight() && this.x + this.weight >= pipe.getX() && this.x <= pipe.getX() + pipe.getWeight()){return true;}
+            else{return false;}
+        }else { // Sinon test avec tuyaux bas
+            if (this.y + this.height >= pipe.getY() && this.x + this.weight >= pipe.getX() && this.x <= pipe.getX() + pipe.getWeight()) {return true;}
+            else {return false;}
         }
     }
 
