@@ -1,7 +1,7 @@
 package com.jeu;
 
 public class Timer  implements Runnable{
-    private final int pause = 5;
+    private final int pause = 7;
 
     @Override
     public void run() {
